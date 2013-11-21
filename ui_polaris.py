@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_polaris.ui'
 #
-# Created: Wed Sep 11 10:38:59 2013
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Thu Nov 21 11:10:24 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Polaris(object):
     def setupUi(self, Polaris):
@@ -81,18 +90,18 @@ class Ui_Polaris(object):
         QtCore.QMetaObject.connectSlotsByName(Polaris)
 
     def retranslateUi(self, Polaris):
-        Polaris.setWindowTitle(QtGui.QApplication.translate("Polaris", "POLARIS Aanalyzer", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFile.setTitle(QtGui.QApplication.translate("Polaris", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuRecent_Databases.setTitle(QtGui.QApplication.translate("Polaris", "Recent Databases", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuTools.setTitle(QtGui.QApplication.translate("Polaris", "Tools", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDatabase.setText(QtGui.QApplication.translate("Polaris", "Open Database", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionA.setText(QtGui.QApplication.translate("Polaris", "a", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionB.setText(QtGui.QApplication.translate("Polaris", "b", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionConnect_TestCase.setText(QtGui.QApplication.translate("Polaris", "Connect TestCase", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDraw.setText(QtGui.QApplication.translate("Polaris", "Draw", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionQuit.setText(QtGui.QApplication.translate("Polaris", "Quit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNew_XY_DB_Plot.setText(QtGui.QApplication.translate("Polaris", "New XY DB Plot", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNew_XY_DB_Plot_1.setText(QtGui.QApplication.translate("Polaris", "New XY DB Plot 1", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionTravel_Time_Layer.setText(QtGui.QApplication.translate("Polaris", "Travel Time Layer", None, QtGui.QApplication.UnicodeUTF8))
+        Polaris.setWindowTitle(_translate("Polaris", "POLARIS Aanalyzer", None))
+        self.menuFile.setTitle(_translate("Polaris", "File", None))
+        self.menuRecent_Databases.setTitle(_translate("Polaris", "Recent Databases", None))
+        self.menuTools.setTitle(_translate("Polaris", "Tools", None))
+        self.actionDatabase.setText(_translate("Polaris", "Open Database", None))
+        self.actionA.setText(_translate("Polaris", "a", None))
+        self.actionB.setText(_translate("Polaris", "b", None))
+        self.actionConnect_TestCase.setText(_translate("Polaris", "Connect TestCase", None))
+        self.actionDraw.setText(_translate("Polaris", "Draw", None))
+        self.actionQuit.setText(_translate("Polaris", "Quit", None))
+        self.actionNew_XY_DB_Plot.setText(_translate("Polaris", "New XY DB Plot", None))
+        self.actionNew_XY_DB_Plot_1.setText(_translate("Polaris", "New XY DB Plot 1", None))
+        self.actionTravel_Time_Layer.setText(_translate("Polaris", "Travel Time Layer", None))
 
 import resources_rc

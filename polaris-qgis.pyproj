@@ -6,8 +6,8 @@
     <ProjectGuid>{2c417fa3-d2b7-41d9-b79b-6d577b82cc69}</ProjectGuid>
     <ProjectHome />
     <StartupFile>test.py</StartupFile>
-    <SearchPath>C:\Users\vsokolov\soft\OSGeo4W\apps\python27\lib\site-packages</SearchPath>
-    <WorkingDirectory>C:\Users\vsokolov\soft\OSGeo4W\bin</WorkingDirectory>
+    <SearchPath>C:\Program Files\QGIS Dufour\apps\Python27\Lib\site-packages</SearchPath>
+    <WorkingDirectory>D:\proj\polaris\analyser</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
@@ -40,17 +40,24 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="__init__.py" />
+    <Compile Include="resources_rc.py" />
     <Content Include="compile_qt.bat">
       <SubType>Content</SubType>
     </Content>
     <Content Include="metadata.txt" />
     <Content Include="readme.txt" />
+    <Content Include="resources.qrc" />
+    <Content Include="ui_db_plot.ui" />
+    <Content Include="ui_db_plot1.ui" />
     <Content Include="ui_polaris.ui">
       <SubType>Content</SubType>
     </Content>
     <Content Include="ui_time_span.ui">
       <SubType>Content</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

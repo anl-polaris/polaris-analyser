@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_db_plot1.ui'
 #
-# Created: Wed Sep 11 10:39:00 2013
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Thu Nov 21 11:10:24 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_DBPlot1(object):
     def setupUi(self, DBPlot1):
@@ -65,10 +74,10 @@ class Ui_DBPlot1(object):
         QtCore.QMetaObject.connectSlotsByName(DBPlot1)
 
     def retranslateUi(self, DBPlot1):
-        DBPlot1.setWindowTitle(QtGui.QApplication.translate("DBPlot1", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.plotButton.setText(QtGui.QApplication.translate("DBPlot1", "Plot", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("DBPlot1", "X", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_3.setText(QtGui.QApplication.translate("DBPlot1", "Y", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("DBPlot1", "Table", None, QtGui.QApplication.UnicodeUTF8))
-        self.whereText.setDocumentTitle(QtGui.QApplication.translate("DBPlot1", "Where Statement", None, QtGui.QApplication.UnicodeUTF8))
+        DBPlot1.setWindowTitle(_translate("DBPlot1", "Form", None))
+        self.plotButton.setText(_translate("DBPlot1", "Plot", None))
+        self.label_2.setText(_translate("DBPlot1", "X", None))
+        self.label_3.setText(_translate("DBPlot1", "Y", None))
+        self.label.setText(_translate("DBPlot1", "Table", None))
+        self.whereText.setDocumentTitle(_translate("DBPlot1", "Where Statement", None))
 

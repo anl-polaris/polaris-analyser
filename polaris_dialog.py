@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, QtSql
 from ui_polaris import Ui_Polaris
 from geo_tools import *
 from  qgis.core import *
@@ -31,7 +31,7 @@ class CreateLayerTread(QtCore.QThread):
         self.count = 0
         self.start_time = start_time
         self.end_time = end_time
-        QtGui.QMessageBox.about(None, "Genrating Layer", "Start time: %s\nEnd time: %s"%(str(self.start_time), str(self.end_time)))
+        QtGui.QMessageBox.about(None, "Generating Layer", "Start time: %s\nEnd time: %s"%(str(self.start_time), str(self.end_time)))
     def status(self):
         self.count += 1
         self.partDone.emit(self.count*self.n)
@@ -39,6 +39,8 @@ class CreateLayerTread(QtCore.QThread):
 
     def run(self):
         self.partDone.emit(0)
+        
+        #self.conn = sqlite3.connect(fileName)
         self.conn = sqlite3.connect(self.db_path)
         #QtGui.QMessageBox.about(self, "My message box", "Connected")     
         #QtGui.Message.about(self, "1", "2")
@@ -215,21 +217,46 @@ class PolarisDialog(QtGui.QMainWindow):
         self.ui.actionTravel_Time_Layer.triggered.connect(self.crate_new_layer)
         self.connect()
         self.draw_all()
+        self.db_table(self.dbfileName,"1", "County/Class VMT", "select county as COUNTY, link_type as TYPE, sum(link_vmt) as VMT from link_vmt group by county, link_type order by county, link_type")
+        self.db_table(self.dbfileName,"3", "Class VMT","select link_type as TYPE, sum(link_vmt) as VMT from link_vmt group by link_type order by link_type")
+        self.db_table(self.dbfileName,"5", "County VMT", "select county as COUNTY, sum(link_vmt) as VMT from link_vmt group by county")
     def fileQuit(self):
         self.close()
-    def create_plot_tab(self,tab_tag, tab_name):
+    def create_tab(self,tab_tag, tab_name):
         self.tabs[tab_tag] = QtGui.QWidget()
         self.tabs[tab_tag].setObjectName(_fromUtf8(tab_name))
         layout_tag = tab_tag+"Layout"
         self.layouts[layout_tag] = QtGui.QVBoxLayout(self.tabs[tab_tag])
         self.layouts[layout_tag].setObjectName(_fromUtf8(layout_tag))
         self.ui.tabWidget.addTab(self.tabs[tab_tag], _fromUtf8(tab_name))                
+    def db_table(self,dbfileName, tag, name,sql):
+        self.create_tab(tag, name)
+        tv = QtGui.QTableView(self)
+        tv.setObjectName(_fromUtf8(tag+"tableView"))
+        self.layouts[tag+"Layout"].addWidget(tv)
+        db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
+        db.setDatabaseName(dbfileName)
+        QtGui.QMessageBox.about(None, "POLARIS", dbfileName)
+        if not db.open():
+            QtGui.QMessageBox.warning(None, "POLARIS",
+                QString("Database Error: %1").arg(db.lastError().text()))
+        model = QtSql.QSqlTableModel(None, db)
+        sql_prepared = QtSql.QSqlQuery(sql)
+        model.setQuery(sql_prepared)
+        #model.setTable("Link")
+        model.select()
+        #QtGui.QMessageBox.about(None,"POLARIS", "Statement: "+model.selectStatement())
+        #QtGui.QMessageBox.about(None,"POLARIS", "Name: "+self.dbfileName)
+        tv.setModel(model)
+        #tv.show()
+        del db
+        return tv
     def db_plot(self):
-        self.create_plot_tab("db_plot", "DB Plot")
+        self.create_tab("db_plot", "DB Plot")
         dbp = DBPlot(self.conn)
         self.layouts["db_plotLayout"].addWidget(dbp)
     def db_plot_1(self):
-        self.create_plot_tab("db_plot_1", "DB Plot 1")
+        self.create_tab("db_plot_1", "DB Plot 1")
         dbp = DBPlot1(self.conn)
         self.layouts["db_plot_1Layout"].addWidget(dbp)
     def load_recent(self):
@@ -250,7 +277,7 @@ class PolarisDialog(QtGui.QMainWindow):
             x.append(int(tt))
             y.append(int(count))
             #y.append(math.log10(int(count)))   
-        self.create_plot_tab("ttTab", "Travel Time")
+        self.create_tab("ttTab", "Travel Time")
         fig = mpl.MyMplCanvas(self.tabs["ttTab"], width=5, height=4, dpi=100)
         self.layouts["ttTabLayout"].addWidget(fig.mpl_toolbar)
         self.layouts["ttTabLayout"].addWidget(fig)       
@@ -273,7 +300,7 @@ class PolarisDialog(QtGui.QMainWindow):
             autos.append(auto)
             types.append(type)
             transits.append(transit)
-        self.create_plot_tab("atTab", "Activity Type")
+        self.create_tab("atTab", "Activity Type")
         fig = mpl.MyMplCanvas(self.tabs["atTab"], width=5, height=4, dpi=100)
         self.layouts["atTabLayout"].addWidget(fig.mpl_toolbar)
         self.layouts["atTabLayout"].addWidget(fig)       
@@ -292,11 +319,23 @@ class PolarisDialog(QtGui.QMainWindow):
         self.draw_tt()
         self.draw_mode()
     def connect(self):
-        self.conn = sqlite3.connect("../test_case/chicago-Supply.sqlite")
+        fileName = "D:\\proj\\polaris\\analyser\\\data\\chicago-Supply.sqlite"
+        if not os.path.exists(fileName):
+            fileName = QtGui.QFileDialog.getOpenFileName(None, "Open Database", ".", "Image Files (*.db *.sqlite)");
+        self.dbfileName = fileName
+        if (fileName == ''):
+            QtGui.QMessageBox.about(None,"POLARIS", "No file was selected. The plug-in will not start")
+            return
+
+        db_dir = os.path.dirname(fileName)
+        #os.environ['PATH'] = 'C:\\opt\\polarisdeps\\spatialite\\Win32' + ';' + os.environ['PATH']
+        self.conn = sqlite3.connect(fileName)
+        #self.conn = sqlite3.connect("../test_case/chicago-Supply.sqlite")
         self.conn.enable_load_extension(1)
-        self.conn.load_extension('./spatialite4.dll') 
-        self.conn.execute("attach database \'../test_case/chicago-Demand.sqlite\' as Demand") 
-        self.conn.execute("attach database \'../test_case/chicago-Result.sqlite\' as res")
+        
+        self.conn.load_extension('spatialite.dll')
+        self.conn.execute("attach database \'%s/chicago-Demand.sqlite\' as Demand"%db_dir) 
+        self.conn.execute("attach database \'%s/chicago-Result.sqlite\' as res"%db_dir)
         #QtGui.QMessageBox.about(self, "My message box", "Connected")     
         self.conn_message = QtGui.QLabel("Connected to test_case/chicago-Supply.sqlite")
         self.conn_message.setMinimumSize(self.conn_message.sizeHint())
