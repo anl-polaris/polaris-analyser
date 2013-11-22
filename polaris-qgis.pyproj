@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2c417fa3-d2b7-41d9-b79b-6d577b82cc69}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>test.py</StartupFile>
+    <StartupFile>unit_test.py</StartupFile>
     <SearchPath>C:\Program Files\QGIS Dufour\apps\Python27\Lib\site-packages</SearchPath>
     <WorkingDirectory>D:\proj\polaris\analyser</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -32,6 +32,7 @@
     <Compile Include="mpl.py" />
     <Compile Include="polaris.py" />
     <Compile Include="polaris_dialog.py" />
+    <Compile Include="ReportItem.py" />
     <Compile Include="test.py" />
     <Compile Include="ui_polaris.py">
       <SubType>Code</SubType>
@@ -39,6 +40,7 @@
     <Compile Include="ui_time_span.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="unit_test.py" />
     <Compile Include="__init__.py" />
     <Compile Include="resources_rc.py" />
     <Content Include="compile_qt.bat">
