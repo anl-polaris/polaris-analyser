@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'county_vmt.ui'
+# Form implementation generated from reading ui file 'data_widget.ui'
 #
-# Created: Fri Nov 22 15:54:34 2013
+# Created: Fri Nov 22 17:59:29 2013
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,12 +26,12 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(389, 320)
-        self.horizontalLayout = QtGui.QHBoxLayout(Form)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.tableView = QtGui.QTableView(Form)
-        self.tableView.setObjectName(_fromUtf8("tableView"))
-        self.horizontalLayout.addWidget(self.tableView)
+        Form.resize(620, 403)
+        self.verticalLayout_2 = QtGui.QVBoxLayout(Form)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

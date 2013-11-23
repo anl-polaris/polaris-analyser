@@ -5,8 +5,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2c417fa3-d2b7-41d9-b79b-6d577b82cc69}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>unit_test.py</StartupFile>
-    <SearchPath>C:\Program Files\QGIS Dufour\apps\Python27\Lib\site-packages</SearchPath>
+    <StartupFile>pa.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
     <WorkingDirectory>D:\proj\polaris\analyser</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
@@ -30,9 +31,12 @@
     <Compile Include="embedding_in_qt4.py" />
     <Compile Include="geo_tools.py" />
     <Compile Include="mpl.py" />
+    <Compile Include="pa.py" />
     <Compile Include="polaris.py" />
     <Compile Include="polaris_dialog.py" />
+    <Compile Include="Project.py" />
     <Compile Include="ReportItem.py" />
+    <Compile Include="ReportItem2D.py" />
     <Compile Include="test.py" />
     <Compile Include="ui_polaris.py">
       <SubType>Code</SubType>

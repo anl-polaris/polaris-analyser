@@ -1,18 +1,21 @@
 from ReportItem import ReportItem
 import sqlite3
 
-data_path = 'd:/proj/polaris/analyser/data/'
-c = sqlite3.connect(data_path + 'chicago-Supply.sqlite')
-c.execute("attach database 'chicago-Result.sqlite' as res")
-c.execute("attach database 'chicago-Intermidiate.sqlite' as interm")
+#create database for testing
+data_path = './'
+c = sqlite3.connect(data_path+"unit_test.sqlite")
+c.execute("attach '%sunit_test_intermidiate.sqlite' as interm"%data_path)
+c.execute('drop table if exists XY')
+c.execute('create table XY (x real, y real)')
 
-ri = ReportItem("select link, speed_ab from link", "xy", (c,['res','interm']))
-req = ('link', 'link','')
-ri.add_requirement('link', 'link','')
+
+ri = ReportItem("select x,y from XY", (c,['interm']))
+req = ('XY', ['x', 'y'],'')
+ri.add_requirement(req)
 assert ri.check_requirement(req)==True
 
-req = ('temp_column', 'temp_table','create temp table temp_table (temp_column int)')
-ri.add_requirement('temp_column', 'temp_table','create table interm.temp_table (temp_column int)')
+req = ('temp_table',['temp_column'],'create table interm.temp_table (temp_column int)')
+ri.add_requirement(req)
 assert ri.check_requirement(req)!=True
 ri.apply_requirements()
 assert ri.check_requirement(req)==True

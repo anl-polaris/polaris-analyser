@@ -12,3 +12,8 @@ from:
     backend      : TkAgg
 to:
     backend      : Qt4Agg
+
+Requirements:
+PyQT4
+numpy
+matplotlib

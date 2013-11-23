@@ -162,7 +162,7 @@ class TimeSpanDialog(QtGui.QDialog):
         self.close()
 
 
-#DD MATPLOTLIB TO THE db plot widget
+#ADD MATPLOTLIB TO THE db plot widget
 class DBPlot(QtGui.QWidget): 
     def __init__(self, conn):
         QtGui.QWidget.__init__(self)
