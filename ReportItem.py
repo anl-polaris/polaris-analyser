@@ -1,4 +1,6 @@
 class ReportItem(object):
+    sql = None
+    requirements = []
     """Represents a single item to be used for data analysis, such as 2D plot, table, bar chart or a single number"""
     #conn = (sqlite3.connection, [db1, db2, ..., dbn]), here db1, ..., dbn are attached databases
     def __init__(self, sql, conn):

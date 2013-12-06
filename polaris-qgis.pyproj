@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2c417fa3-d2b7-41d9-b79b-6d577b82cc69}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>pa.py</StartupFile>
+    <StartupFile>unit_test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>D:\proj\polaris\analyser</WorkingDirectory>
@@ -38,6 +38,7 @@
     <Compile Include="ReportItem.py" />
     <Compile Include="ReportItem2D.py" />
     <Compile Include="test.py" />
+    <Compile Include="tree_manipulations.py" />
     <Compile Include="ui_polaris.py">
       <SubType>Code</SubType>
     </Compile>
@@ -45,6 +46,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="unit_test.py" />
+    <Compile Include="utils.py" />
     <Compile Include="__init__.py" />
     <Compile Include="resources_rc.py" />
     <Content Include="compile_qt.bat">

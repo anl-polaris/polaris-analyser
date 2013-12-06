@@ -5,6 +5,7 @@ import ReportItem2D
 import Project
 progname = os.path.basename(sys.argv[0])
 progversion = "0.1"
+import tree_manipulations
 
 class DataWidget(QtGui.QWidget):
     def __init__(self):
@@ -25,9 +26,10 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.clear()
         pr = Project.Project()
         pw = Project.ProjectWidget()
-        pw.SetText(pr.xml_string)
-        aw.ui.plotLayout.addWidget(pw)
-        
+        pw.SetText(pr.str)
+        self.ui.plotLayout.addWidget(pw)
+        tree_manipulations.setup_tree(self.ui.treeWidget)
+        tree_manipulations.populate_tree(pr, self.ui.treeWidget)
         
 qApp = QtGui.QApplication(sys.argv)
 
