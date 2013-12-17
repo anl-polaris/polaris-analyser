@@ -1,14 +1,31 @@
+import utils
 class ReportItem(object):
+    str = None
     sql = None
     requirements = []
-    """Represents a single item to be used for data analysis, such as 2D plot, table, bar chart or a single number"""
+    requiremnts_checked = False
     #conn = (sqlite3.connection, [db1, db2, ..., dbn]), here db1, ..., dbn are attached databases
-    def __init__(self, sql, conn):
-        self.sql = sql
-        self.requirements = []
-        self.requiremnts_checked = False
-        self.data_cashed = False
-        self.conn = conn
+    conn = None
+    """Represents a single item to be used for data analysis, such as 2D plot, table, bar chart or a single number"""
+    def __init__(self, str):
+        self.str = str
+        self.PopulateFromString()
+
+    def Reset(self):
+        str = None
+        sql = None
+        requirements = []
+        requiremnts_checked = False
+        conn = None
+    def PopulateFromString(self):
+        self.Reset()
+        (k,v) = utils.FromString(self.str)
+        sql = v[k.index('sql')]
+        for i in utils.Indeces(k,'req'):
+            req = v[i].split(';')
+
+            requirements.aeppne(i)
+
     def add_requirement(self,req):
         self.requirements.append(req)
     def check_requirement(self,req):

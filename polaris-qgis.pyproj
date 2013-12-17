@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2c417fa3-d2b7-41d9-b79b-6d577b82cc69}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>unit_test.py</StartupFile>
+    <StartupFile>pa.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>D:\proj\polaris\analyser</WorkingDirectory>
