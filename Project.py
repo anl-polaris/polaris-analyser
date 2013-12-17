@@ -10,6 +10,7 @@ class Project(object):
     str = None
     conn = None
     control_data = None
+    filename = None
     """description of class"""
     def __init__(self):
         ud = os.path.expanduser('~')
@@ -24,6 +25,15 @@ class Project(object):
         self.control_data = json.loads(str)
         self.str = str
         self.conn = None
+    def SatisfiedItems(self):
+        if self.conn is None:
+            return None
+        else:
+            i =  self.conn.execute("select name from intmed.req where satisfied=1").fetchall()
+            return [x[0] for x in i] 
+    def AddSatisfiedItems(self,name):
+        self.conn.execute("insert into intmed.req values (?,?)",(str(name), True))
+
     # returns (flag, message)
     def Connect(self):
         db_paths = []
@@ -33,15 +43,20 @@ class Project(object):
         if len(db_paths) == 0:
             return (False, "No Master databse specified for the project.")
         #check that all of the databases exist but the intmed_db
-        for item in db_paths[:len(db_paths)-1]:
+        n = len(db_paths)
+        for item in db_paths[:n-1]:
             if not os.path.exists(item):
                 return (False, "The specified database file %s does not exist."%item)
         try:
             #connect the master database
-            conn = sqlite3.connect(db_paths[0])
-            for item in db_paths[1:]:
+            self.conn = sqlite3.connect(db_paths[0], check_same_thread=False)
+            self.conn.enable_load_extension(1)
+            self.conn.load_extension('libspatialite-4.dll')
+            for item in db_paths[1:n-1]:
                 db_name = os.path.basename(item).split('.')[0] 
-                conn.execute("ATTACH DATABASE '%s' as '%s'"%(item, db_name))
+                self.conn.execute("ATTACH DATABASE '%s' as '%s'"%(item, db_name))
+            self.conn.execute("ATTACH DATABASE '%s' as '%s'"%(db_paths[n-1], "intmed"))
+            self.conn.execute("create table if not exists intmed.req (name text, satisfied bool)")
                 #atatched_db.append(db_name)
             return (True, "OK")
         except Exception as ex:

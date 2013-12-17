@@ -3,7 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4.Qsci import QsciScintilla, QsciLexerSQL
 
-
+#borrowed from http://eli.thegreenplace.net/2011/04/01/sample-using-qscintilla-with-pyqt/
 class QSEditor(QsciScintilla):
     ARROW_MARKER_NUM = 8
     def __init__(self, parent=None):
@@ -16,6 +16,7 @@ class QSEditor(QsciScintilla):
         font.setPointSize(10)
         self.setFont(font)
         self.setMarginsFont(font)
+        self.setWrapMode(QsciScintilla.WrapWord)
 
         # Margin 0 is used for line numbers
         fontmetrics = QFontMetrics(font)

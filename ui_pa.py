@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pa.ui'
 #
-# Created: Mon Dec 16 19:18:48 2013
+# Created: Tue Dec 17 15:44:48 2013
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,8 +42,10 @@ class Ui_MainWindow(object):
         self.treeWidget.setMinimumSize(QtCore.QSize(0, 400))
         self.treeWidget.setMaximumSize(QtCore.QSize(200, 16777215))
         self.treeWidget.setAutoFillBackground(False)
+        self.treeWidget.setIndentation(10)
         self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
         self.treeWidget.headerItem().setText(0, _fromUtf8("1"))
+        self.treeWidget.header().setVisible(False)
         self.horizontalLayout.addWidget(self.treeWidget)
         self.plotLayout = QtGui.QVBoxLayout()
         self.plotLayout.setObjectName(_fromUtf8("plotLayout"))
@@ -74,12 +76,18 @@ class Ui_MainWindow(object):
         self.actionPopulate.setObjectName(_fromUtf8("actionPopulate"))
         self.actionConnect = QtGui.QAction(MainWindow)
         self.actionConnect.setObjectName(_fromUtf8("actionConnect"))
+        self.actionReset_Requirements = QtGui.QAction(MainWindow)
+        self.actionReset_Requirements.setObjectName(_fromUtf8("actionReset_Requirements"))
+        self.actionRefresh = QtGui.QAction(MainWindow)
+        self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionExit)
         self.menuProject.addAction(self.actionConnect)
         self.menuProject.addAction(self.actionPopulate)
+        self.menuProject.addAction(self.actionReset_Requirements)
+        self.menuProject.addAction(self.actionRefresh)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuProject.menuAction())
 
@@ -92,10 +100,16 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuProject.setTitle(_translate("MainWindow", "Project", None))
         self.actionNew.setText(_translate("MainWindow", "New", None))
+        self.actionNew.setShortcut(_translate("MainWindow", "Ctrl+N", None))
         self.actionSave.setText(_translate("MainWindow", "Save", None))
+        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S", None))
         self.actionOpen.setText(_translate("MainWindow", "Open", None))
+        self.actionOpen.setShortcut(_translate("MainWindow", "Ctrl+O", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
+        self.actionExit.setShortcut(_translate("MainWindow", "Ctrl+Q", None))
         self.actionPopulate.setText(_translate("MainWindow", "Populate", None))
         self.actionConnect.setText(_translate("MainWindow", "Connect", None))
+        self.actionReset_Requirements.setText(_translate("MainWindow", "Reset Requirements", None))
+        self.actionRefresh.setText(_translate("MainWindow", "Refresh", None))
 
 import resources_rc

@@ -40,6 +40,12 @@
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>
+          <property name="indentation">
+           <number>10</number>
+          </property>
+          <attribute name="headerVisible">
+           <bool>false</bool>
+          </attribute>
           <column>
            <property name="text">
             <string notr="true">1</string>
@@ -80,6 +86,9 @@
     </property>
     <addaction name="actionConnect"/>
     <addaction name="actionPopulate"/>
+    <addaction name="actionReset_Requirements"/>
+    <addaction name="actionRefresh"/>
+    <addaction name="actionAdd_Requierement"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuProject"/>
@@ -89,20 +98,32 @@
    <property name="text">
     <string>New</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionPopulate">
@@ -113,6 +134,21 @@
   <action name="actionConnect">
    <property name="text">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionReset_Requirements">
+   <property name="text">
+    <string>Reset Requirements</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </action>
+  <action name="actionAdd_Requierement">
+   <property name="text">
+    <string>Add  Requierement</string>
    </property>
   </action>
  </widget>
