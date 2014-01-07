@@ -17,7 +17,7 @@ class Project(object):
         self.control_data = OrderedDict()
         self.control_data['name'] = "New Report Project"
         self.control_data['master_db'] = ud+'/db.sqlite'
-        self.control_data['attach_db'] = (ud+'/db1.sqlite', ud+'/db2.sqlite')
+        self.control_data['attach_db'] = [[ud+'/db1.sqlite','db1'], [ud+'/db2.sqlite','db2']]
         self.control_data['intmed_db'] = ud+'/intmed.sqlite'
         self.control_data['sql_path'] = ud+'/reports'
         self.str = json.dumps(self.control_data, indent=2, separators=(',',': '))
@@ -49,12 +49,15 @@ class Project(object):
                 return (False, "The specified database file %s does not exist."%item)
         try:
             #connect the master database
+            print "Connecting to: %s"%db_paths[0]
             self.conn = sqlite3.connect(db_paths[0], check_same_thread=False)
             self.conn.enable_load_extension(1)
             self.conn.load_extension('libspatialite-4.dll')
             for item in db_paths[1:n-1]:
                 db_name = os.path.basename(item).split('.')[0] 
+                print "ATTACH DATABASE '%s' as '%s'"%(item, db_name)
                 self.conn.execute("ATTACH DATABASE '%s' as '%s'"%(item, db_name))
+            print "ATTACH DATABASE '%s' as '%s'"%(db_paths[n-1], "intmed")
             self.conn.execute("ATTACH DATABASE '%s' as '%s'"%(db_paths[n-1], "intmed"))
             self.conn.execute("create table if not exists intmed.req (name text, satisfied bool)")
                 #atatched_db.append(db_name)

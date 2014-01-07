@@ -19,6 +19,9 @@ class DataWidget(QtGui.QWidget):
 class ApplicationWindow(QtGui.QMainWindow):
     proj = None
     connected = False
+    partDone = QtCore.pyqtSignal(int)
+    allDone =  QtCore.pyqtSignal()
+    message =  QtCore.pyqtSignal(str, str)
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.ui = ui_pa.Ui_MainWindow()
@@ -38,6 +41,7 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.ui.treeWidget.itemClicked.connect(self.tree_clicked)
         self.ui.treeWidget.itemDoubleClicked.connect(self.tree_double_clicked)
         self.editor.textChanged.connect(self.editor_text_changed)
+        self.load_from_file("c:\\users\\vsokolov\\test.pr")
     def update_status(self):
         self.status_message.setText("Project file: %s    Connected: %s"%(self.proj.filename, str(self.connect)))
         self.ui.statusbar.reformat()
@@ -83,12 +87,10 @@ class ApplicationWindow(QtGui.QMainWindow):
         else:
             self.connect = True
         self.update_status()
-    def open(self):
+    def load_from_file(self, filename):
         if self.proj is None:
             self.proj = Project.Project()
-        self.proj.filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'),   "Project (*.pr)")
-        if  self.proj.filename == "":
-            return
+        self.proj.filename = filename
         with open(self.proj.filename) as fh:
             self.proj.PopulateFromString(fh.read())
         self.editor.setText(self.proj.str)
@@ -96,22 +98,57 @@ class ApplicationWindow(QtGui.QMainWindow):
         tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
         self.connect = False
         self.update_status()
+    def open(self): 
+        filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'),   "Project (*.pr)")
+        if filename == "":
+            return
+        self.load_from_file(filename)
     def tree_clicked(self,item, column):
         self.editor.setText(item.data(0,QtCore.Qt.UserRole).toString())
     def tree_double_clicked(self,item,column):
         if item.parent().data(0,0).toString() == "Requirements":
             script = str(item.data(0,QtCore.Qt.UserRole).toString())
             self.update_db_status(0)
-            th = SqlExecuteThread(self.proj.conn, script)
-            th.partDone.connect(self.update_db_status)
-            th.allDone.connect(self.update_db_status_done)
-            th.start()
-            self.proj.AddSatisfiedItems(item.data(0,0).toString())
+            name = item.data(0,0).toString()
+            #print "Executing\n%s"%script
+            #self.proj.conn.executescript(script)
+            #print "Executed!"            
+            self.th = GenericThread(self.apply_requirement, name, script)
+            #QtCore.QObject.connect(th, QtCore.SIGNAL("finished ()"), self.update_requirements_status)
+            #self.partDone.disconnect(self.update_db_status)
+            self.partDone.connect(self.update_db_status)
+            #self.allDone.disconnect(self.update_db_status_done)
+            self.allDone.connect(self.update_db_status_done)
+            self.message.connect(self.show_thread_message)
+            self.th.start()
+    def show_thread_message(self,head, msg):
+        QtGui.QMessageBox.warning(None, head, msg)
+    def update_requirements_status(self, name):
+            self.proj.AddSatisfiedItems(name)
             tree_manipulations.colorize_requireents(self.proj, self.ui.treeWidget)
     def editor_text_changed(self):
         current_item =  self.ui.treeWidget.selectedItems()[0]
         current_item.setData(0, QtCore.Qt.UserRole,  self.editor.text())
-
+    def status(self):
+        self.count += 1
+        self.partDone.emit(self.count*10000)    
+    def apply_requirement(self,name, script):
+        print "Executing %s"%script
+        self.partDone.emit(0)        
+        self.proj.conn.set_progress_handler(self.status,  10000)        
+        try:
+            print 1
+            self.proj.conn.executescript(script)
+            print 2
+            self.update_requirements_status(name)
+        except Exception as ex:
+            self.message.emit("Script Execution Error", ex.message)
+            self.partDone.emit(-1)
+            return
+        self.proj.conn.commit() 
+        print "Commited to DB"       
+        self.allDone.emit()
+        return
 
 
 qApp = QtGui.QApplication(sys.argv)
