@@ -61,6 +61,7 @@ class Project(object):
             self.conn.execute("ATTACH DATABASE '%s' as '%s'"%(db_paths[n-1], "intmed"))
             self.conn.execute("create table if not exists intmed.req (name text, satisfied bool)")
                 #atatched_db.append(db_name)
+            self.conn.commit()
             return (True, "OK")
         except Exception as ex:
             return (False, ex.message)

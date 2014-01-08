@@ -113,14 +113,16 @@ class ApplicationWindow(QtGui.QMainWindow):
             #print "Executing\n%s"%script
             #self.proj.conn.executescript(script)
             #print "Executed!"            
-            self.th = GenericThread(self.apply_requirement, name, script)
+            
             #QtCore.QObject.connect(th, QtCore.SIGNAL("finished ()"), self.update_requirements_status)
             #self.partDone.disconnect(self.update_db_status)
             self.partDone.connect(self.update_db_status)
             #self.allDone.disconnect(self.update_db_status_done)
             self.allDone.connect(self.update_db_status_done)
             self.message.connect(self.show_thread_message)
-            self.th.start()
+            #self.th = GenericThread(self.apply_requirement, name, script)
+            #self.th.start()
+            self.apply_requirement(name, script)
     def show_thread_message(self,head, msg):
         QtGui.QMessageBox.warning(None, head, msg)
     def update_requirements_status(self, name):
@@ -138,7 +140,7 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.proj.conn.set_progress_handler(self.status,  10000)        
         try:
             print 1
-            self.proj.conn.executescript(script)
+            a = self.proj.conn.executescript(script)
             print 2
             self.update_requirements_status(name)
         except Exception as ex:
