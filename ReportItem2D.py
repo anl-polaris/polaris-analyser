@@ -22,8 +22,7 @@ class ReportItem2D(ReportItem):
         if not self.populated:
             self.populate_data()
 
-#ADD MATPLOTLIB TO THE db plot widget
-class DBPlot(QtGui.QWidget): 
+class MPLot(QtGui.QWidget): 
     def __init__(self):
         QtGui.QWidget.__init__(self)
         self.ui = ui_data_widget.Ui_Form()

@@ -54,10 +54,13 @@ def populate_tree(project, tree):
     if os.path.exists(folder+'/report.json'):
         with open(folder+'/report.json') as fh:
             content = json.load(fh)
+            fh.seek(0)
+            contents = fh.read()
         report_items = content["items"]
+        ri.setData(column, QtCore.Qt.UserRole, contents)
+        ri.setData(column, QtCore.Qt.UserRole+1, folder+'/report.json')
         for item in report_items:
-            #temp = add_child(ri, column,item, report_items[item], None)
-            temp = add_child(ri, column,item,[1,2,3], None)
+            temp = add_child(ri, column,item,None, None)
     return content
 
 
@@ -89,3 +92,4 @@ def add_child(parent, column, title, data, filename=None):
     item.setData(column, QtCore.Qt.UserRole+1,  QtCore.QVariant(filename))
     #item.setCheckState (column, QtCore.Qt.Unchecked)
     return item
+

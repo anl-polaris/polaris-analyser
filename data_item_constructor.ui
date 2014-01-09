@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DBPlot1</class>
- <widget class="QWidget" name="DBPlot1">
+ <class>DIConstructor</class>
+ <widget class="QWidget" name="DIConstructor">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>327</width>
+    <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="enabled">
@@ -22,35 +22,15 @@
      <property name="maximumSize">
       <size>
        <width>350</width>
-       <height>150</height>
+       <height>220</height>
       </size>
      </property>
      <property name="title">
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="3" column="0">
-       <widget class="QPushButton" name="plotButton">
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Plot</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>X</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboX">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboTable">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -79,8 +59,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="comboTable">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboX">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -92,6 +72,65 @@
           <width>250</width>
           <height>16777215</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPlainTextEdit" name="nameTextEdit">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QPushButton" name="addButton">
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Add</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QPlainTextEdit" name="whereText">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="documentTitle">
+         <string>Where Statement</string>
+        </property>
+        <property name="maximumBlockCount">
+         <number>0</number>
         </property>
        </widget>
       </item>
@@ -111,22 +150,10 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QPlainTextEdit" name="whereText">
-        <property name="documentTitle">
-         <string>Where Statement</string>
-        </property>
-        <property name="maximumBlockCount">
-         <number>0</number>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
   </layout>
-  <zorder>comboTable</zorder>
-  <zorder>groupBox</zorder>
  </widget>
  <resources/>
  <connections/>

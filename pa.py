@@ -4,6 +4,7 @@ import ui_pa, ui_data_widget
 import ReportItem2D
 import Project
 progname = os.path.basename(sys.argv[0])
+from DIConstructor import DIConstructor
 progversion = "0.1"
 import tree_manipulations
 from QSEditor import QSEditor
@@ -38,10 +39,17 @@ class ApplicationWindow(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.actionSave, QtCore.SIGNAL("triggered()"), self.save)
         QtCore.QObject.connect(self.ui.actionConnect, QtCore.SIGNAL("triggered()"), self.connect)
         QtCore.QObject.connect(self.ui.actionOpen, QtCore.SIGNAL("triggered()"), self.open)
+        QtCore.QObject.connect(self.ui.actionAdd_Data_Item, QtCore.SIGNAL("triggered()"), self.add_data_item)
         self.ui.treeWidget.itemClicked.connect(self.tree_clicked)
         self.ui.treeWidget.itemDoubleClicked.connect(self.tree_double_clicked)
         self.editor.textChanged.connect(self.editor_text_changed)
         self.load_from_file("c:\\users\\vsokolov\\test.pr")
+    def add_data_item(self):
+        sql,name,res = DIConstructor.getValues(self.proj.conn)
+        if sql is not None and name is not None:
+            with open(self.proj.control_data['sql_path']+"/data_"+name+".sql", 'w') as fh:
+                fh.write(sql+";")
+            self.tree_data = tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
     def update_status(self):
         self.status_message.setText("Project file: %s    Connected: %s"%(self.proj.filename, str(self.connect)))
         self.ui.statusbar.reformat()
@@ -131,7 +139,7 @@ class ApplicationWindow(QtGui.QMainWindow):
             if os.path.exists(fn):
                 with open(fn) as fh:
                     sql = fh.read()
-                self.plot_xy("Lalal", sql)
+                self.plot_xy("Lalal", sql, data["type"])
 
     def show_thread_message(self,head, msg):
         QtGui.QMessageBox.warning(None, head, msg)
@@ -161,9 +169,9 @@ class ApplicationWindow(QtGui.QMainWindow):
         print "Commited to DB"       
         self.allDone.emit()
         return
-    def plot_xy(self, text, sql):
+    def plot_xy(self, text, sql, type):
         for i in range(self.ui.plotLayout.count()): self.ui.plotLayout.itemAt(i).widget().close()
-        plot2d = ReportItem2D.DBPlot()
+        plot2d = ReportItem2D.MPLot()
         self.ui.plotLayout.addWidget(plot2d)
         #self.fig.axes.clear()
         #xcol = self.ui.comboX.currentText()
@@ -172,10 +180,17 @@ class ApplicationWindow(QtGui.QMainWindow):
         res = self.proj.conn.execute(sql).fetchall()
         x = []
         y = []
-        for item in res:
+        for item in res: 
             x.append(item[0])
             y.append(item[1])
-        plot2d.add_xy(x,y)
+        if type=="xy":
+            plot2d.fig.axes.plot(x,y,'--')
+        elif type=="scatter":
+            plot2d.fig.axes.scatter(x,y)
+        #self.fig.axes.set_xlabel(str(xlabel).capitalize()) 
+        #self.fig.axes.set_ylabel(str(ylabel).capitalize())
+        plot2d.fig.draw()
+        #plot2d.add_xy(x,y)
             #self.fig.axes.plot(x,y,'*')
         #self.fig.axes.set_xlabel(str(xcol).capitalize())
         #self.fig.axes.set_ylabel(str(ycol).capitalize())
@@ -186,8 +201,11 @@ qApp = QtGui.QApplication(sys.argv)
 
 aw = ApplicationWindow()
 #aw.setWindowTitle("%s" % progname)
-plot2d = ReportItem2D.DBPlot()
+plot2d = ReportItem2D.MPLot()
 aw.ui.plotLayout.addWidget(plot2d)
-plot2d.add_xy([1,2,3],[5,6,7])
+plot2d.fig.axes.plot([1,2,3],[5,6,7],'--')
+#self.fig.axes.set_xlabel(str(xlabel).capitalize()) 
+#self.fig.axes.set_ylabel(str(ylabel).capitalize())
+plot2d.fig.draw()
 aw.show()
 sys.exit(qApp.exec_())

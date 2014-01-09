@@ -89,6 +89,7 @@
     <addaction name="actionReset_Requirements"/>
     <addaction name="actionRefresh"/>
     <addaction name="actionAdd_Requierement"/>
+    <addaction name="actionAdd_Data_Item"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuProject"/>
@@ -149,6 +150,16 @@
   <action name="actionAdd_Requierement">
    <property name="text">
     <string>Add  Requierement</string>
+   </property>
+  </action>
+  <action name="actionData_Designer">
+   <property name="text">
+    <string>Add Data Item</string>
+   </property>
+  </action>
+  <action name="actionAdd_Data_Item">
+   <property name="text">
+    <string>Add Data Item</string>
    </property>
   </action>
  </widget>

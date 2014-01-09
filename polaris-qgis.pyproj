@@ -26,9 +26,11 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Compile Include="data_item_constructor.py" />
     <Compile Include="db_plot1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DIConstructor.py" />
     <Compile Include="embedding_in_qt4.py" />
     <Compile Include="geo_tools.py" />
     <Compile Include="mpl.py" />
@@ -41,12 +43,6 @@
     <Compile Include="SqlExecuteThread.py" />
     <Compile Include="test.py" />
     <Compile Include="tree_manipulations.py" />
-    <Compile Include="ui_polaris.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ui_time_span.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="unit_test.py" />
     <Compile Include="utils.py" />
     <Compile Include="__init__.py" />
@@ -57,14 +53,6 @@
     <Content Include="metadata.txt" />
     <Content Include="readme.txt" />
     <Content Include="resources.qrc" />
-    <Content Include="ui_db_plot.ui" />
-    <Content Include="ui_db_plot1.ui" />
-    <Content Include="ui_polaris.ui">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="ui_time_span.ui">
-      <SubType>Content</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
