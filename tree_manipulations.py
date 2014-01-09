@@ -15,6 +15,7 @@ def setup_tree(tree):
 #http://pyqt.sourceforge.net/Docs/PyQt4/qvariant.html
 
 def populate_tree(project, tree):
+    tree.clear()
     root = tree.invisibleRootItem()
     tree.setHeaderHidden(True)
     column = 0

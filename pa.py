@@ -40,6 +40,8 @@ class ApplicationWindow(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.actionConnect, QtCore.SIGNAL("triggered()"), self.connect)
         QtCore.QObject.connect(self.ui.actionOpen, QtCore.SIGNAL("triggered()"), self.open)
         QtCore.QObject.connect(self.ui.actionAdd_Data_Item, QtCore.SIGNAL("triggered()"), self.add_data_item)
+        QtCore.QObject.connect(self.ui.actionRefresh_Tree, QtCore.SIGNAL("triggered()"), self.refresh_tree)
+        
         self.ui.treeWidget.itemClicked.connect(self.tree_clicked)
         self.ui.treeWidget.itemDoubleClicked.connect(self.tree_double_clicked)
         self.editor.textChanged.connect(self.editor_text_changed)
@@ -68,6 +70,8 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.proj = Project.Project()
         self.editor.setText(self.proj.str)
         tree_manipulations.setup_tree(self.ui.treeWidget)
+        self.tree_data = tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
+    def refresh_tree(self):
         self.tree_data = tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
     def save_tree_item(self, item):
         if item.data(0,QtCore.Qt.UserRole+1).toString() != "":

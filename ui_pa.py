@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pa.ui'
 #
-# Created: Thu Jan 09 11:39:46 2014
+# Created: Thu Jan 09 12:10:02 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,10 +82,10 @@ class Ui_MainWindow(object):
         self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
         self.actionAdd_Requierement = QtGui.QAction(MainWindow)
         self.actionAdd_Requierement.setObjectName(_fromUtf8("actionAdd_Requierement"))
-        self.actionData_Designer = QtGui.QAction(MainWindow)
-        self.actionData_Designer.setObjectName(_fromUtf8("actionData_Designer"))
         self.actionAdd_Data_Item = QtGui.QAction(MainWindow)
         self.actionAdd_Data_Item.setObjectName(_fromUtf8("actionAdd_Data_Item"))
+        self.actionRefresh_Tree = QtGui.QAction(MainWindow)
+        self.actionRefresh_Tree.setObjectName(_fromUtf8("actionRefresh_Tree"))
         self.menuFile.addAction(self.actionNew)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionOpen)
@@ -96,6 +96,7 @@ class Ui_MainWindow(object):
         self.menuProject.addAction(self.actionRefresh)
         self.menuProject.addAction(self.actionAdd_Requierement)
         self.menuProject.addAction(self.actionAdd_Data_Item)
+        self.menuProject.addAction(self.actionRefresh_Tree)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuProject.menuAction())
 
@@ -120,7 +121,7 @@ class Ui_MainWindow(object):
         self.actionReset_Requirements.setText(_translate("MainWindow", "Reset Requirements", None))
         self.actionRefresh.setText(_translate("MainWindow", "Refresh", None))
         self.actionAdd_Requierement.setText(_translate("MainWindow", "Add  Requierement", None))
-        self.actionData_Designer.setText(_translate("MainWindow", "Add Data Item", None))
         self.actionAdd_Data_Item.setText(_translate("MainWindow", "Add Data Item", None))
+        self.actionRefresh_Tree.setText(_translate("MainWindow", "Refresh Tree", None))
 
 import resources_rc
