@@ -60,7 +60,7 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.proj = Project.Project()
         self.editor.setText(self.proj.str)
         tree_manipulations.setup_tree(self.ui.treeWidget)
-        tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
+        self.tree_data = tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
     def save_tree_item(self, item):
         if item.data(0,QtCore.Qt.UserRole+1).toString() != "":
             with open(str(item.data(0,QtCore.Qt.UserRole+1).toString()),'w') as fh:
@@ -95,7 +95,7 @@ class ApplicationWindow(QtGui.QMainWindow):
             self.proj.PopulateFromString(fh.read())
         self.editor.setText(self.proj.str)
         self.connect()
-        tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
+        self.tree_data = tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
         self.connect = False
         self.update_status()
     def open(self): 
@@ -120,9 +120,19 @@ class ApplicationWindow(QtGui.QMainWindow):
             #self.allDone.disconnect(self.update_db_status_done)
             self.allDone.connect(self.update_db_status_done)
             self.message.connect(self.show_thread_message)
-            #self.th = GenericThread(self.apply_requirement, name, script)
-            #self.th.start()
-            self.apply_requirement(name, script)
+            self.th = GenericThread(self.apply_requirement, name, script)
+            self.th.start()
+            #self.apply_requirement(name, script)
+        if item.parent().data(0,0).toString() == "Report Items":
+            data = self.tree_data["items"][str(item.data(0,0).toString())]
+            #get the sql statement to plot
+            folder = self.proj.control_data['sql_path']
+            fn = folder + "/data_" + data["data"]+".sql"
+            if os.path.exists(fn):
+                with open(fn) as fh:
+                    sql = fh.read()
+                self.plot_xy("Lalal", sql)
+
     def show_thread_message(self,head, msg):
         QtGui.QMessageBox.warning(None, head, msg)
     def update_requirements_status(self, name):
@@ -137,10 +147,10 @@ class ApplicationWindow(QtGui.QMainWindow):
     def apply_requirement(self,name, script):
         print "Executing %s"%script
         self.partDone.emit(0)        
-        self.proj.conn.set_progress_handler(self.status,  10000)        
+        #self.proj.conn.set_progress_handler(self.status,  10000)        
         try:
             print 1
-            a = self.proj.conn.executescript(script)
+            self.proj.conn.executescript(script)
             print 2
             self.update_requirements_status(name)
         except Exception as ex:
@@ -151,6 +161,25 @@ class ApplicationWindow(QtGui.QMainWindow):
         print "Commited to DB"       
         self.allDone.emit()
         return
+    def plot_xy(self, text, sql):
+        for i in range(self.ui.plotLayout.count()): self.ui.plotLayout.itemAt(i).widget().close()
+        plot2d = ReportItem2D.DBPlot()
+        self.ui.plotLayout.addWidget(plot2d)
+        #self.fig.axes.clear()
+        #xcol = self.ui.comboX.currentText()
+        #ycol = self.ui.comboY.currentText()
+        #table = self.ui.comboTable.currentText()
+        res = self.proj.conn.execute(sql).fetchall()
+        x = []
+        y = []
+        for item in res:
+            x.append(item[0])
+            y.append(item[1])
+        plot2d.add_xy(x,y)
+            #self.fig.axes.plot(x,y,'*')
+        #self.fig.axes.set_xlabel(str(xcol).capitalize())
+        #self.fig.axes.set_ylabel(str(ycol).capitalize())
+        #self.fig.draw()
 
 
 qApp = QtGui.QApplication(sys.argv)

@@ -2,6 +2,7 @@ import Project
 from PyQt4 import QtGui, QtCore
 import glob
 import os.path
+import json
 #QTreeWidget  tree
 def setup_tree(tree):
     tree.setHeaderLabels(QtCore.QStringList("Project Items"))
@@ -22,8 +23,8 @@ def populate_tree(project, tree):
     data = add_parent(root, column, "Data")
     ri = add_parent(root, column, "Report Items")
     folder = project.control_data['sql_path']
+    #populate Data item
     data_ls = glob.glob(folder+'/data_*.sql')
-    #satisifed_items = project.SatisfiedItems()
     for item in data_ls:
         fn = os.path.basename(item)
         n = len(fn)
@@ -33,6 +34,7 @@ def populate_tree(project, tree):
         with open(item) as fh:
             content = fh.read()
         temp = add_child(data, column, data_name, content, item)        
+    #populate Requirements
     rqls = glob.glob(folder+'/rq_*.sql')
     for item in rqls:
         fn = os.path.basename(item)
@@ -48,6 +50,16 @@ def populate_tree(project, tree):
         #else:
         #    temp.setTextColor(column, QtGui.QColor(255,0,0))
     colorize_requireents(project, tree)
+    content = None
+    if os.path.exists(folder+'/report.json'):
+        with open(folder+'/report.json') as fh:
+            content = json.load(fh)
+        report_items = content["items"]
+        for item in report_items:
+            #temp = add_child(ri, column,item, report_items[item], None)
+            temp = add_child(ri, column,item,[1,2,3], None)
+    return content
+
 
 def colorize_requireents(project, tree):
     for i in range(tree.topLevelItemCount()):
@@ -73,7 +85,7 @@ def add_parent(parent, column, title, data=None, filename=None):
 
 def add_child(parent, column, title, data, filename=None):
     item = QtGui.QTreeWidgetItem(parent, [title])
-    item.setData(column, QtCore.Qt.UserRole, data)
-    item.setData(column, QtCore.Qt.UserRole+1, filename)
+    item.setData(column, QtCore.Qt.UserRole,  QtCore.QVariant(data))
+    item.setData(column, QtCore.Qt.UserRole+1,  QtCore.QVariant(filename))
     #item.setCheckState (column, QtCore.Qt.Unchecked)
     return item
