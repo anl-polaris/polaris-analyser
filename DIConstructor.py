@@ -9,14 +9,29 @@ class DIConstructor(QtGui.QDialog, Ui_DIConstructor):
         self.addButton.clicked.connect(self.add)
         self.conn = conn
         self.whereText.setPlainText("type where statement here...")
+        
+        QtCore.QObject.connect(self.comboDB, QtCore.SIGNAL("currentIndexChanged(QString)"), self.populate_tables)
+        QtCore.QObject.connect(self.comboTable, QtCore.SIGNAL("currentIndexChanged(QString)"), self.populate_xy)
+
+        #get all of the databases in the connection
+        res = self.conn.execute('PRAGMA database_list')
         ind = 0
+        for item in res:
+            self.comboDB.insertItem(ind,item[1])
+            ind += 1
+        if self.comboDB.count > 0:
+            self.comboDB.setCurrentIndex(0)
+    def populate_tables(self, db_name):
         #get all of the table names
-        res = self.conn.execute('SELECT name FROM sqlite_master WHERE type=\'table\' and rootpage < 10000 and rootpage!=0 and name NOT LIKE (\'sqlite%\') order by name ').fetchall()
+        res = self.conn.execute('SELECT name FROM \'%s\'.sqlite_master WHERE type=\'table\' and rootpage < 10000 and rootpage!=0 and name NOT LIKE (\'sqlite%%\') order by name'%(str(db_name),)).fetchall()
+        self.comboTable.clear()
+        ind = 0
         for item in res:
             self.comboTable.insertItem(ind,item[0])
             ind += 1
-        QtCore.QObject.connect(self.comboTable, QtCore.SIGNAL("currentIndexChanged(QString)"), self.populate_xy)
     def populate_xy(self, table):
+        if str(table) =="":
+            return
         res = self.conn.execute('pragma table_info(%s)'%table).fetchall()
         ind = 0
         self.comboX.clear()

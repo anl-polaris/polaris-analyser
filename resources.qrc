@@ -1,5 +1,11 @@
 <RCC>
-  <qresource prefix="/plugins/polaris" >
-     <file>./icons/logo.png</file>
-  </qresource> 
+  <qresource prefix="/plugins/polaris">
+    <file>icons/save.png</file>
+    <file>icons/news-subscribe-2.png</file>
+    <file>icons/run-rebuild-2.png</file>
+    <file>icons/system-log-out.png</file>
+    <file>icons/system-reboot-2.png</file>
+    <file>./icons/logo.png</file>
+    <file>icons/project-open-3.png</file>
+  </qresource>
 </RCC>

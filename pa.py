@@ -9,7 +9,7 @@ progversion = "0.1"
 import tree_manipulations
 from QSEditor import QSEditor
 from SqlExecuteThread import *
-
+import numpy as np
 class DataWidget(QtGui.QWidget):
     def __init__(self):
         QtGui.QWidget.__init__(self)
@@ -108,7 +108,7 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.editor.setText(self.proj.str)
         self.connect()
         self.tree_data = tree_manipulations.populate_tree(self.proj, self.ui.treeWidget)
-        self.connect = False
+        self.connect = True
         self.update_status()
     def open(self): 
         filename = QtGui.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'),   "Project (*.pr)")
@@ -169,6 +169,7 @@ class ApplicationWindow(QtGui.QMainWindow):
             self.message.emit("Script Execution Error", ex.message)
             self.partDone.emit(-1)
             return
+        print "Starting Commit"
         self.proj.conn.commit() 
         print "Commited to DB"       
         self.allDone.emit()
@@ -181,16 +182,55 @@ class ApplicationWindow(QtGui.QMainWindow):
         #xcol = self.ui.comboX.currentText()
         #ycol = self.ui.comboY.currentText()
         #table = self.ui.comboTable.currentText()
-        res = self.proj.conn.execute(sql).fetchall()
+        try:
+            with open("c:\\users\\vsokolov\\pa.log",'a') as fh:
+                fh.write(sql+'\n')
+            res = self.proj.conn.execute(sql).fetchall()
+        except Exception as ex:
+            QtGui.QMessageBox.warning(None, "SQL Error", "Unable to execute sql statement. "+ex.message, 0,0)
+            return
+        ax = plot2d.fig.axes
         x = []
         y = []
         for item in res: 
             x.append(item[0])
             y.append(item[1])
+        x = np.array(x)
+        y = np.array(y)
         if type=="xy":
             plot2d.fig.axes.plot(x,y,'--')
         elif type=="scatter":
+            m,b = np.polyfit(x,y,1)
             plot2d.fig.axes.scatter(x,y)
+            minx = min(x)
+            maxx = max(x)
+            xx = np.array([minx,maxx])
+            plot2d.fig.axes.plot(xx,m*xx + b,'r-', linewidth=2, label="Least Squares Fit")
+            #plot2d.fig.axes.xlim([minx,maxx])
+
+            textstr = 'a=%.2f\nb=%.2f'%(m,b)
+            ax = plot2d.fig.axes
+            # these are matplotlib.patch.Patch properties
+            props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+            # place a text box in upper left in axes coords
+            ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=14,
+                    verticalalignment='top', bbox=props)
+        elif type=='hist':
+            plot2d.fig.axes.hist(x)
+        elif type=="pie":
+            labels = map(lambda s: s[0:3], x)
+            fracs = y
+            ax.pie(fracs, labels=labels)
+        elif type=="bar":
+            types = map(lambda s: s[0:3], x)
+            bars = y
+            n = len(types)
+            ind = np.arange(n)#the locations of the groups
+            width = 0.35
+            ax.set_xticks(ind+width)
+            ax.set_xticklabels(types, rotation=45)
+            ax.bar(ind,bars, width, color='r')
+        plot2d.fig.fig.tight_layout()
         #self.fig.axes.set_xlabel(str(xlabel).capitalize()) 
         #self.fig.axes.set_ylabel(str(ylabel).capitalize())
         plot2d.fig.draw()
